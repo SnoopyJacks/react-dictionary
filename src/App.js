@@ -1,6 +1,8 @@
 import logo from './dictionary.jpg';
 import './App.css';
 import Dictionary from './Dictionary';
+import Results from './Results';
+import Meaning from './Meaning';
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
       </header>
       <main>
         <Dictionary />
+        <p><Results /></p>
+        <p><Meaning /></p>
       </main>
       <footer className="text-center">
         Coded by Justine Ziola
