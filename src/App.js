@@ -8,10 +8,9 @@ export default function App() {
       <div className="container">
       <header className="App-header">
         <img src={logo} className="App-logo img-fluid" alt="logo" />
-        <h1>Dictionary React App</h1>
       </header>
       <main>
-        <Dictionary />
+        <Dictionary defaultKeyword="computer" />
       </main>
       <footer className="text-center">
         Coded by Justine Ziola
