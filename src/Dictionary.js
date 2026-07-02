@@ -15,18 +15,18 @@ export default function Dictionary(props) {
     setResults(response.data[0]);
   }
 
-  function handlePexelsResponse(response) {
+  function handleImagesResponse(response) {
     setPhotos(response.data.photos);
   }
 
 function search() {
-  let apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${keyword}`;
+  let apiKey = "7da4d2833b785tc382cf9d899bo46033";
+  let apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
   axios.get(apiUrl).then(handleDictionaryResponse);
 
-  let pexelsApiKey = "fKvhNlwNrBxCTULk1VhQoM5GpTP8koDcRpGJuvdJE0lsju48ipXzgBKv";
-  let pexelsApiUrl = `https://api.pexels.com/v1/search?query=${keyword}&per_page=9`;
-  let headers = { Authorization: `Bearer ${pexelsApiKey}` };
-  axios.get(pexelsApiUrl, { headers: headers }).then(handlePexelsResponse);
+  let imagesApiKey = "7da4d2833b785tc382cf9d899bo46033";
+  let imagesApiUrl = `https://api.shecodes.io/images/v1/search?query=${keyword}&key=${imagesApiKey}`;
+  axios.get(imagesApiUrl).then(handleImagesResponse);
 }
 
   function handleSubmit(event) {
