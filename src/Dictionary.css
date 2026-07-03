@@ -12,6 +12,12 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
 }
+.Dictionary form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
 .Dictionary input {
   width: 100%;
@@ -22,6 +28,21 @@
   color: #333;
   font-weight: 600;
 } 
+
+.Dictionary button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.Dictionary button:hover {
+  background-color: #0056b3;
+}
 
 .Dictionary .hint {
   margin-top: 10px;
