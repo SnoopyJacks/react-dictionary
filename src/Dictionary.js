@@ -12,7 +12,7 @@ export default function Dictionary(props) {
   let [photos, setPhotos] = useState(null);
 
   function handleDictionaryResponse(response) {
-    setResults(response.data[0]);
+    setResults(response.data);
   }
 
   function handleImagesResponse(response) {
