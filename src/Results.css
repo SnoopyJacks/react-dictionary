@@ -3,3 +3,15 @@
   font-weight: bold;
   line-height: 1.2;
 }
+
+.Results section {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.Results .phonetics {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 10px;
+}
