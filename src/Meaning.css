@@ -2,10 +2,18 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #0284c7;
+}
+
+.Meaning .definition {
+  color: #334155;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .Meaning .example {
   font-style: italic;
   margin-bottom: 20px;
   opacity: 0.7;
+  color: #64748b;
 }

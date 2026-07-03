@@ -2,16 +2,20 @@
   font-size: 36px;
   font-weight: bold;
   line-height: 1.2;
+  color: #0f172a;
 }
 
 .Results section {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border-left: 5px solid #38bdf8;
 }
 
 .Results .phonetics {
   font-size: 18px;
-  color: #666;
+  color: #0284c7;
   margin-bottom: 10px;
 }
