@@ -10,14 +10,17 @@ export default function Photos(props) {
             return (
               <div className="col-4" key={index}>
                 <a
-                  href={photo.src ? photo.src.original : "#"}
+                  href={photo.src.original}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
+                  aria-label={`Open full-size image of ${photo.alt || keyword}`}
                 >
                   <img
                     src={photo.src.landscape}
                     className="img-fluid"
-                    alt={photo.alt}
+                    alt={photo.alt || `Photo illustrating ${keyword}`}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </a>
               </div>

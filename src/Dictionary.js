@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import axios from "axios";
 import Results from "./Results";
 import Photos from "./Photos";
 import './Dictionary.css';
 
 
-export default function Dictionary(props) {
-  let [keyword, setKeyword] = useState(props.defaultKeyword);
+export default function Dictionary({ defaultKeyword}) {
+  let [searchedKeyword, setSearchedKeyword] = useState(defaultKeyword);
+  let [keyword, setKeyword] = useState(defaultKeyword);
   let [results, setResults] = useState(null);
-  let [loaded, setLoaded] = useState(false);
+  let [loading, setLoading] = useState(false);
   let [photos, setPhotos] = useState(null);
+  let [error, setError] = useState("");
 
   function handleDictionaryResponse(response) {
     setResults(response.data);
@@ -49,7 +51,12 @@ function search() {
       <section>
         <h1>What word do you want to look up?</h1>
         <form onSubmit={handleSubmit}>
-          <input type="search" onChange={handleKeywordChange} defaultValue={props.defaultKeyword} />
+          <label htmlFor="dictionary-search>Word to look up"></label>
+          <input 
+          id="dictionary-search"
+          name="keyword"
+          type="search" 
+          onChange={handleKeywordChange} defaultValue={props.defaultKeyword} />
           <button type="submit">Search</button>
         </form>
         <div className="hint">

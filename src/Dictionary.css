@@ -32,7 +32,7 @@
   font-weight: 600;
 } 
 
-.Dictionary input:focus {
+.Dictionary input:focus-visible {
   outline: none;
   border-color: #38bdf8;
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
@@ -47,6 +47,12 @@
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.Dictionary button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #0369a1;
+  outline-offset: 3px;
 }
 
 .Dictionary button:hover {
