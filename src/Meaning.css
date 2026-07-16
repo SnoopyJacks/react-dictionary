@@ -1,19 +1,31 @@
 .Meaning h3 {
+  margin: 0 0 10px;
+  color: #0369a1;
   font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #0284c7;
+  font-weight: 800;
 }
 
 .Meaning .definition {
+  margin: 0;
   color: #334155;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .Meaning .example {
+  margin: 14px 0 20px;
+  padding-left: 16px;
+  border-left: 3px solid #cbd5e1;
+  color: #475569;
   font-style: italic;
-  margin-bottom: 20px;
-  opacity: 0.7;
-  color: #64748b;
+}
+
+.Meaning .example p {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .Meaning h3 {
+    font-size: 20px;
+  }
 }

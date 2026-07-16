@@ -1,67 +1,105 @@
-.Dictionary h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #0f172a;
+.Dictionary-search {
+  margin: 20px auto;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
-.Dictionary section{
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  margin: 20px auto;
-  border: 1px solid #e5e7eb;
+.Dictionary h1 {
+  margin: 0 0 20px;
+  color: #0f172a;
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
 }
-.Dictionary form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+
+.Dictionary-form {
+  margin-bottom: 10px;
+}
+
+.Dictionary-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.Dictionary-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
 }
 
 .Dictionary input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #333;
-  font-weight: 600;
-} 
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #64748b;
+  border-radius: 6px;
+  color: #1f2937;
+}
 
 .Dictionary input:focus-visible {
-  outline: none;
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  border-color: #0369a1;
+  outline-color: rgba(3, 105, 161, 0.4);
+  outline-offset: 1px;
 }
 
 .Dictionary button {
-  margin-top: 10px;
+  min-height: 44px;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #0369a1;
+  color: #ffffff;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.Dictionary button:focus-visible,
-a:focus-visible {
-  outline: 3px solid #0369a1;
-  outline-offset: 3px;
+.Dictionary button:hover:not(:disabled) {
+  background: #075985;
 }
 
-.Dictionary button:hover {
-  background-color: #0056b3;
+.Dictionary button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 .Dictionary .hint {
-  margin-top: 10px;
+  margin: 10px 0 0;
+  color: #475569;
   font-size: 14px;
-  color: #64748b;
   text-align: center;
+}
+
+.Dictionary-status {
+  min-height: 24px;
+  margin-top: 8px;
+  color: #334155;
+  text-align: center;
+}
+
+.Dictionary-status--error {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .Dictionary-search {
+    padding: 16px;
+  }
+
+  .Dictionary h1 {
+    font-size: 24px;
+  }
+
+  .Dictionary-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .Dictionary button {
+    width: 100%;
+  }
 }

@@ -1,13 +1,28 @@
+
 .Synonyms {
   margin-top: 20px;
 }
 
+.Synonyms h4 {
+  margin: 0 0 8px;
+  color: #334155;
+  font-size: 16px;
+}
+
+.Synonyms ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .Synonyms li {
-  display: inline-block;
-  margin-right: 10px;
-  padding-right: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #075985;
   font-size: 15px;
-  border-radius: 20px;
-  background-color: #e0f2fe;
-  color: #0369a1;
+  line-height: 1.4;
 }

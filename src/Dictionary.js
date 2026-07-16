@@ -1,17 +1,33 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import  { useState, useCallback, useEffect, useRef } from "react";
 import axios from "axios";
 import Results from "./Results";
 import Photos from "./Photos";
 import './Dictionary.css';
 
+const API_BASE_URL = "https://api.shecodes.io";
 
-export default function Dictionary({ defaultKeyword}) {
-  let [searchedKeyword, setSearchedKeyword] = useState(defaultKeyword);
-  let [keyword, setKeyword] = useState(defaultKeyword);
-  let [results, setResults] = useState(null);
-  let [loading, setLoading] = useState(false);
-  let [photos, setPhotos] = useState(null);
-  let [error, setError] = useState("");
+const API_KEY =
+  process.env.REACT_APP_SHECODES_API_KEY || "7da4d2833b785tc382cf9d899bo46033";
+
+async function fetchJson(url, signal) {
+  const response = await fetch(url, { signal });
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status},`);
+  }
+
+  return response.json();
+}
+
+export default function Dictionary({ defaultKeyword = "computer "}) {
+  const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [keyword, setKeyword] = useState(defaultKeyword);
+  const [results, setResults] = useState(null);
+  const [status, setStatus] = useState("idle");
+  const [photos, setPhotos] = useState([]);
+  const [error, setError] = useState("");
+
+  const activeRequest = useRef(null);
 
   function handleDictionaryResponse(response) {
     setResults(response.data);
