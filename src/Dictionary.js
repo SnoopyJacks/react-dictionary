@@ -29,62 +29,141 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
 
   const activeRequest = useRef(null);
 
-  function handleDictionaryResponse(response) {
-    setResults(response.data);
-  }
+  const search = useCallback(async (rawKeyword) => {
+    const normalizedKeyword = rawKeyword.trim();
 
-  function handleImagesResponse(response) {
-    setPhotos(response.data.photos);
-  }
+    if (!normalizedKeyword) {
+      setError("Enter a word to search.");
+      setStatus("error");
+      return;
+    }
 
-function search() {
-  let apiKey = "7da4d2833b785tc382cf9d899bo46033";
-  let apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
-  axios.get(apiUrl).then(handleDictionaryResponse);
+    activeRequest.current?.abort();
 
-  let imagesApiKey = "7da4d2833b785tc382cf9d899bo46033";
-  let imagesApiUrl = `https://api.shecodes.io/images/v1/search?query=${keyword}&key=${imagesApiKey}`;
-  axios.get(imagesApiUrl).then(handleImagesResponse);
-}
+    const controller = new AbortController();
+    activeRequest.current = controller;
+
+    setStatus("loading");
+    setError("");
+    setResults(null);
+    setPhotos([]);
+    setSearchedKeyword(normalizedKeyword);
+
+    const encodedKeyword = encodeURIComponent(normalizedKeyword);
+
+    const dictionaryUrl =
+      `${API_BASE_URL}/dictionary/v1/define` +
+      `?word=${encodedKeyword}&key=${API_KEY}`;
+
+    const imagesUrl =
+      `${API_BASE_URL}/images/v1/search` +
+      `?query=${encodedKeyword}&key=${API_KEY}`;
+
+    try {
+      const [dictionaryResponse, imageResponse] = await Promise.allSettled([
+        fetchJson(dictionaryUrl, controller.signal),
+        fetchJson(imagesUrl, controller.signal),
+      ]);
+
+      if (dictionaryResponse.status === "rejected") {
+        throw dictionaryResponse.reason;
+      }
+
+      setResults(dictionaryResponse.value);
+
+      setPhotos(
+        imageResponse.status === "fulfilled"
+          ? (imagesResponse.value.photos ?? [])
+          : [],
+      );
+
+      setStatus("success");
+
+      document.title = `${normalizedKeyword} definition | Online Dictionary`;
+    } catch (requestError) {
+      if (requestError.name === "AbortError") {
+        return;
+      }
+
+      setError(
+        "We could not find that word right now. Check the spelling and try again.",
+      );
+
+      setStatus("error");
+    }
+  }, []);
+
+  useEffect(() => {
+    search(defaultKeyword);
+
+    return () => {
+      activeRequest.current?.abort();
+    };
+  }, [defaultKeyword, search]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    search();
+    search(keyword);
   }
 
-  function handleKeywordChange(event) {
-    setKeyword(event.target.value);
-  }
-
-  function load() {
-    setLoaded(true);
-    search();
-  }
-  
-  if (loaded) {
   return (
     <div className="Dictionary">
-      <section>
-        <h1>What word do you want to look up?</h1>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="dictionary-search>Word to look up"></label>
-          <input 
-          id="dictionary-search"
-          name="keyword"
-          type="search" 
-          onChange={handleKeywordChange} defaultValue={props.defaultKeyword} />
-          <button type="submit">Search</button>
+      <section className="Dictionary-search" aria-labelledby="dictionary-title">
+        <h1 id="dictionary-title">Look up an English word</h1>
+
+        <form
+          className="Dictionary-form"
+          role="search"
+          onSubmit={handleSubmit}
+          aria-describedby="dictionary-hint dictionary-status"
+        >
+          <label htmlFor="dictionary-search">Word to look up</label>
+
+          <div className="Dictionary-controls">
+            <input
+              id="dictionary-search"
+              name="keyword"
+              type="search"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+              placeholder="For example, computer"
+              autoComplete="off"
+              enterKeyHint="search"
+              required
+            />
+
+            <button type="submit" disabled={status === "loading"}>
+              {status === "loading" ? "Searching…" : "Search"}
+            </button>
+          </div>
         </form>
-        <div className="hint">
-          <p>Hint: Try searching for words like "computer" or "happiness"</p>
+
+        <p id="dictionary-hint" className="hint">
+          Try “computer,” “happiness,” or another English word.
+        </p>
+
+        <div
+          id="dictionary-status"
+          className={`Dictionary-status ${
+            status === "error" ? "Dictionary-status--error" : ""
+          }`}
+          role={status === "error" ? "alert" : "status"}
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {status === "loading" && `Searching for “${keyword.trim()}”…`}
+
+          {status === "error" && error}
         </div>
       </section>
-      <Results results={results} />
-      <Photos photos={photos} />
+
+      {status === "success" && (
+        <>
+          <Results results={results} />
+
+          <Photos photos={photos} keyword={searchedKeyword} />
+        </>
+      )}
     </div>
   );
-} else {
-  load();
-  return "Loading..."
-}
 }

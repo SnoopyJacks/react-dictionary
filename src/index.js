@@ -4,10 +4,14 @@ import './index.css';
 import App from './App';
 
 const rootElement = document.getElementById('root');
-const root = createRoot(rootElement);
-root.render(
+if (!rootElement) {
+  throw new Error('Unable to start the app: missing element with id "root".');
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
 );
+
 

@@ -2,18 +2,28 @@ import React from "react";
 import Synonyms from "./Synonyms";
 import "./Meaning.css";
 
-export default function Meaning(props) {
+function Meaning({ meaning, headingId }) {
+  if (!meaning) {
+    return null;
+  }
+
   return (
-    <div className="Meaning">
-      <h3>{props.meaning.partOfSpeech}</h3>
+    <article className="Meaning" aria-labelledby={headingId}>
+      <h3 id={headingId}>{meaning.partOfSpeech || "Meaning"}</h3>
 
-      <div className="definition">{props.meaning.definition}</div>
+      {meaning.definition && <p className="definition">{meaning.definition}</p>}
 
-      {props.meaning.example && (
-        <div className="example">"{props.meaning.example}"</div>
+      {meaning.example && (
+        <blockquote className="example">
+          <p>{meaning.example}</p>
+        </blockquote>
       )}
 
-      <Synonyms synonyms={props.meaning.synonyms} />
-    </div>
+      <Synonyms synonyms={meaning.synonyms} />
+    </article>
   );
 }
+
+export default memo(Meaning);
+
+

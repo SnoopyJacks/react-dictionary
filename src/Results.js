@@ -1,30 +1,38 @@
-import React from "react";
+import { memo } from "react";
 import Meaning from "./Meaning";
 import Phonetic from "./Phonetic";
 import "./Results.css";
 
-export default function Results(props) {
-  if (props.results) {
-    return (
-      <div className="Results">
-        <section>
-          <h2>{props.results.word}</h2>
-
-          {props.results.phonetic && (
-            <Phonetic phonetic={props.results.phonetic} />
-          )}
-        </section>
-
-        {props.results.meanings.map(function (meaning, index) {
-          return (
-            <section key={index}>
-              <Meaning meaning={meaning} />
-            </section>
-          );
-        })}
-      </div>
-    );
-  } else {
+function Results({ results }) {
+  if (!results?.word) {
     return null;
   }
+  const meanings = Array.isArray(results.meanings) ? results.meanings : [];
+  return (
+    <section className="Results" aria-labelledby="result-word">
+      {" "}
+      <header className="Results-header">
+        {" "}
+        <h2 id="result-word">{results.word}</h2>{" "}
+        <Phonetic phonetic={results.phonetic} />{" "}
+      </header>{" "}
+      {meanings.length > 0 ? (
+        <>
+          {" "}
+          {meanings.map((meaning, index) => {
+            const headingId = `meaning-${index + 1}`;
+            return (
+              <section className="Results-meaning" key={headingId}>
+                {" "}
+                <Meaning meaning={meaning} headingId={headingId} />{" "}
+              </section>
+            );
+          })}{" "}
+        </>
+      ) : (
+        <p>No definitions were returned for this word.</p>
+      )}{" "}
+    </section>
+  );
 }
+export default memo(Results);

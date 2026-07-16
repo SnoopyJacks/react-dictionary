@@ -1,35 +1,50 @@
 import React from "react";
 import "./Photos.css";
 
-export default function Photos(props) {
-  if (props.photos) {
-    return (
-      <section className="Photos">
-        <div className="row">
-          {props.photos.slice(0, 3).map(function (photo, index) {
-            return (
-              <div className="col-4" key={index}>
-                <a
-                  href={photo.src.original}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`Open full-size image of ${photo.alt || keyword}`}
-                >
-                  <img
-                    src={photo.src.landscape}
-                    className="img-fluid"
-                    alt={photo.alt || `Photo illustrating ${keyword}`}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-    );
-  } else {
+function Photos({ photos = [], keyword }) {
+  if (photos.length === 0) {
     return null;
   }
+
+  return (
+    <section className="Photos" aria-labelledby="photos-title">
+      <h2 id="photos-title">Images related to {keyword}</h2>
+
+      <ul className="Photos-grid">
+        {photos.slice(0, 3).map((photo) => {
+          const imageUrl = photo?.src?.landscape;
+          const originalUrl = photo?.src?.original;
+
+          if (!imageUrl || !originalUrl) {
+            return null;
+          }
+
+          const altText =
+            photo.alt?.trim() || `Image illustrating the word ${keyword}`;
+
+          return (
+            <li key={photo.id || originalUrl}>
+              <a
+                href={originalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open full-size ${altText} in a new tab`}
+              >
+                <img
+                  src={imageUrl}
+                  alt={altText}
+                  width="640"
+                  height="427"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
 }
+
+export default memo(Photos);
