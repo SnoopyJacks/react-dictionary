@@ -1,7 +1,6 @@
-import React from "react";
 import "./Photos.css";
 
-function Photos({ photos = [], keyword }) {
+export default function Photos({ photos = [], keyword }) {
   if (photos.length === 0) {
     return null;
   }
@@ -46,5 +45,3 @@ function Photos({ photos = [], keyword }) {
     </section>
   );
 }
-
-export default memo(Photos);

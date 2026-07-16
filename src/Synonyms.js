@@ -1,16 +1,21 @@
-import React from "react";
 import "./Synonyms.css";
 
-export default function Synonyms(props) {
-  if (props.synonyms && props.synonyms.length > 0) {
-    return (
-      <ul className="Synonyms">
-        {props.synonyms.map(function (synonym, index) {
-          return <li key={index}>{synonym}</li>;
-        })}
-      </ul>
-    );
-  } else {
+export default function Synonyms({ synonyms = [] }) {
+  const uniqueSynonyms = [...new Set(synonyms.filter(Boolean))];
+
+  if (uniqueSynonyms.length === 0) {
     return null;
   }
+
+  return (
+    <div className="Synonyms">
+      <h4>Synonyms</h4>
+
+      <ul aria-label="Synonyms">
+        {uniqueSynonyms.map((synonym) => (
+          <li key={synonym}>{synonym}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }

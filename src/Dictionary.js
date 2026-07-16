@@ -1,5 +1,4 @@
 import  { useState, useCallback, useEffect, useRef } from "react";
-import axios from "axios";
 import Results from "./Results";
 import Photos from "./Photos";
 import './Dictionary.css';
@@ -13,18 +12,18 @@ async function fetchJson(url, signal) {
   const response = await fetch(url, { signal });
 
   if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status},`);
+    throw new Error(`Request failed with status ${response.status}.`);
   }
 
   return response.json();
 }
 
-export default function Dictionary({ defaultKeyword = "computer "}) {
+export default function Dictionary({ defaultKeyword = "computer" }) {
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [keyword, setKeyword] = useState(defaultKeyword);
   const [results, setResults] = useState(null);
-  const [status, setStatus] = useState("idle");
   const [photos, setPhotos] = useState([]);
+  const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
   const activeRequest = useRef(null);
@@ -60,7 +59,7 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
       `?query=${encodedKeyword}&key=${API_KEY}`;
 
     try {
-      const [dictionaryResponse, imageResponse] = await Promise.allSettled([
+      const [dictionaryResponse, imagesResponse] = await Promise.allSettled([
         fetchJson(dictionaryUrl, controller.signal),
         fetchJson(imagesUrl, controller.signal),
       ]);
@@ -72,7 +71,7 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
       setResults(dictionaryResponse.value);
 
       setPhotos(
-        imageResponse.status === "fulfilled"
+        imagesResponse.status === "fulfilled"
           ? (imagesResponse.value.photos ?? [])
           : [],
       );
@@ -84,6 +83,8 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
       if (requestError.name === "AbortError") {
         return;
       }
+
+      console.error(requestError);
 
       setError(
         "We could not find that word right now. Check the spelling and try again.",
@@ -106,6 +107,10 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
     search(keyword);
   }
 
+  function handleKeywordChange(event) {
+    setKeyword(event.target.value);
+  }
+
   return (
     <div className="Dictionary">
       <section className="Dictionary-search" aria-labelledby="dictionary-title">
@@ -125,7 +130,7 @@ export default function Dictionary({ defaultKeyword = "computer "}) {
               name="keyword"
               type="search"
               value={keyword}
-              onChange={(event) => setKeyword(event.target.value)}
+              onChange={handleKeywordChange}
               placeholder="For example, computer"
               autoComplete="off"
               enterKeyHint="search"

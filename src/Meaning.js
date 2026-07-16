@@ -1,8 +1,7 @@
-import React from "react";
 import Synonyms from "./Synonyms";
 import "./Meaning.css";
 
-function Meaning({ meaning, headingId }) {
+export default function Meaning({ meaning, headingId }) {
   if (!meaning) {
     return null;
   }
@@ -23,7 +22,3 @@ function Meaning({ meaning, headingId }) {
     </article>
   );
 }
-
-export default memo(Meaning);
-
-
